@@ -2,8 +2,8 @@ import { LOGIN, SIGNUP, LOGOUT, REFRESH_TOKEN } from "../actions/UserActions";
 
 const initialState = {
     loggedInUser: undefined,
-    token: undefined
-};
+    token: undefined,
+ };
 
 const UserReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -25,7 +25,7 @@ const UserReducer = (state = initialState, action) => {
         case LOGIN:
             return { ...state, loggedInUser: action.payload.user, 
                 token: action.payload.token };
-
+setname
     default:
         return state;
     }

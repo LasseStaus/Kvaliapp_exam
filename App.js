@@ -9,11 +9,13 @@ import { Provider } from 'react-redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import ReduxThunk from 'redux-thunk';
 import Navigation from './components/Navigation';
+import CheckBox from 'react-native-check-box'
 
 
 const rootReducer = combineReducers({
   chat: ChatReducer,
   user: UserReducer,
+  terms: false,
   //posts: PostReducer
 });
 

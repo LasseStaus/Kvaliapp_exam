@@ -12,12 +12,19 @@ import { HeaderShownContext } from '@react-navigation/elements';
 import SignupScreen from './../screens/SignupScreen';
 import LoginScreen from './../screens/LoginScreen';
 import { useSelector } from 'react-redux';
+import { useFonts } from 'expo-font';
 
 const Navigation = props => {
     
     const Stack = createNativeStackNavigator();
     const Tab = createBottomTabNavigator();
     const loggedInUser = useSelector(state => state.user.loggedInUser);
+
+
+
+
+    const [loaded] = useFonts({TekoMedium: require('../assets/fonts/Teko-Medium.ttf'), TekoLight: require('../assets/fonts/Teko-Light.ttf')} );
+        if (!loaded) {return null;}
 
     return (
     <NavigationContainer>
@@ -32,9 +39,9 @@ const Navigation = props => {
 
     ) : (
 
-        <Stack.Navigator>
-            <Stack.Screen name="Signup" component={SignupScreen} />
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Login" component={LoginScreen} />
+            <Stack.Screen name="Signup" component={SignupScreen} />
         </Stack.Navigator>
     
     )}

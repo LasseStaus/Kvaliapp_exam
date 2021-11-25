@@ -7,9 +7,10 @@ export const REFRESH_TOKEN = 'REFRESH_TOKEN';
 
 import * as SecureStore from 'expo-secure-store';
 
+
 const api_key = 'AIzaSyBV2KOnzeYrwe6Lwz2B_NbMExB2Jo2aTNs';
 
-export const restoreUser = (user, token) => {
+export const restoreUser = (user:any, token:any) => {
     return {type: LOGIN, payload: { user, token } };
 }
 
@@ -21,8 +22,9 @@ export const logout = () => {
     return {type: LOGOUT };
 };
 
-export const refreshToken = (refreshToken) => {
-    return async dispatch => { // redux thunk
+export const refreshToken = (refreshToken:any) => {
+ 
+    return async (dispatch:any) => { // redux thunk
         console.log("refreshToken");
         console.log(refreshToken);
         const response = await fetch('https://securetoken.googleapis.com/v1/token?key=' +  api_key, {
@@ -51,8 +53,8 @@ export const refreshToken = (refreshToken) => {
     };   
 }
 
-export const login = (email, password) => {
-   return async dispatch => { // redux thunk
+export const login = (email:any, password:any) => {
+   return async (dispatch:any) => { // redux thunk
        const response = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=' +  api_key, {
            method: 'POST',
            headers: {
@@ -75,7 +77,6 @@ export const login = (email, password) => {
            
            const user = new User(data.localId, '', '', '', email);
             
-            
            SecureStore.setItemAsync('userToken', data.idToken);
            SecureStore.setItemAsync('user', JSON.stringify(user));
            let expiration = new Date();
@@ -90,9 +91,9 @@ export const login = (email, password) => {
 };
 
 
-export const signup = (email, password) => {
+export const signup = (email:any, password:any) => {
     // console.log(email + " " + password);
-   return async dispatch => { // redux thunk
+   return async (dispatch:any) => { // redux thunk
     // console.log("again" + email + " " + password);
        const response = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=' +  api_key, {
            method: 'POST',

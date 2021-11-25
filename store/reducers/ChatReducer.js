@@ -4,6 +4,7 @@ import { LOGOUT } from "../actions/UserActions";
 
 const initialState = {
     isHappy: false,
+    terms: false, 
     chatRooms: []
 };
 
