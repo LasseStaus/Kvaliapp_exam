@@ -26,13 +26,12 @@ const SignupScreen = (props: any) => {
     const dispatch = useDispatch();
 
     const handleSignup = () => {
-        dispatch(signup(changeEmail, changePassword));
+        dispatch(signup(changeEmail, changePassword, props));
+     
     }
     const goToTermsAndConditions = () => {
         console.log("switch page")
     }
-
-
     return (
     <View style={styles.container}>
    <Image

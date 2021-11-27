@@ -5,17 +5,19 @@ import { StyleSheet, Text, View } from 'react-native';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import ChatReducer from './store/reducers/ChatReducer';
 import UserReducer from './store/reducers/UserReducer';
+import EventReducer from './store/reducers/EventReducer';
 import { Provider } from 'react-redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import ReduxThunk from 'redux-thunk';
 import Navigation from './components/Navigation';
-import CheckBox from 'react-native-check-box'
+import CheckBox from 'react-native-check-box';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
 const rootReducer = combineReducers({
   chat: ChatReducer,
   user: UserReducer,
-  terms: false,
+  event: EventReducer,
   //posts: PostReducer
 });
 

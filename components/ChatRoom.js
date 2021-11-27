@@ -19,9 +19,8 @@ const ChatRoom = props => {
         <View style={styles.chatRoom}>
         
             <View style={styles.imageView}>
-                <Image
-                    style={styles.tinyLogo}
-                    source={props.chatroom.imageUrl}/>
+
+            <Image  style={styles.messageImage} source={require('../assets/imgs/default-user-img.png')}  />
             </View>
             <View style={styles.textView}>
                 <Text style={styles.text}>{props.chatroom.chatRoomName}</Text>
@@ -37,18 +36,35 @@ const ChatRoom = props => {
 }
 
 const styles = StyleSheet.create({
-   
     chatRoom: {
+  
         flexDirection: 'row',
-        marginTop: 10,
-        marginBottom: 10,
-        paddingLeft: 20,
-        paddingRight: 20
+        height: 80,
+ 
+        justifyContent:'flex-start',
+        width: 390,
+        backgroundColor: "grey",
+        borderWidth: 5,
+        marginBottom:5,
+        marginTop:5,
+        
     },
+    messageImage: {
+     
+        width: 90, 
+        height: 80, 
+        borderRadius: 50,
+        alignSelf:'center',
+        justifyContent:'center',
+        resizeMode: "contain",
+           },
+
     textView: {
-        paddingLeft: 5,
-        paddingRight: 5,
-        width: '80%'
+        justifyContent:'space-between',
+        flexDirection: 'column',
+        paddingTop: 15,
+        paddingBottom:15,
+    
     },
     message: {
         
@@ -57,11 +73,11 @@ const styles = StyleSheet.create({
          fontWeight: "bold",
     },
     dotView: {
-         marginLeft: 'auto'
+    
         
     },
     imageView: {
-        marginTop: -10
+
     },
     dot: {
      height: 12,

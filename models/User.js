@@ -8,6 +8,7 @@ class User {
       this.studyProgramme = studyProgramme;
       this.chatToggle = chatToggle;
       this.eventToggle = eventToggle;
+    
     }
   }
 

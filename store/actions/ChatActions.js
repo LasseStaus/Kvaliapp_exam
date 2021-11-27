@@ -22,7 +22,8 @@ export const newChatRoom = (chatroomName) => {
 
                                     // Find this link for YOUR firebase, in the "Realtime Database"-tab in the firebase console
                                     // You must use YOUR link and not this link, to save data in your database and not mine.
-        const response = await fetch('https://kvaliapp-default-rtdb.europe-west1.firebasedatabase.app/chatrooms.json?auth=' +  token, {
+                                    
+        const response = await fetch('https://kvaliapp-c1e89-default-rtdb.europe-west1.firebasedatabase.app/chatrooms.json?auth=' +  token, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -31,6 +32,7 @@ export const newChatRoom = (chatroomName) => {
                 //key value pairs of data you want to send to server
                 // ...
                 chatroomName: chatroomName,
+                imageUrl: 'default-user-img.png',
                 messages: []
             })
         });
@@ -41,7 +43,8 @@ export const newChatRoom = (chatroomName) => {
             //There was a problem..
         } else {
             // do something?
-            dispatch({ type: NEW_CHATROOM, payload: chatroomName })
+            const chatRoom = new ChatRoom(data.name, 'default-user-img.png', chatroomName, []);
+            dispatch({ type: NEW_CHATROOM, payload: chatRoom })
         }
     };
 };
@@ -52,7 +55,7 @@ export const fetchChatRooms = () => {
 
                                     // Find this link for YOUR firebase, in the "Realtime Database"-tab in the firebase console
                                     // You must use YOUR link and not this link, to save data in your database and not mine.
-        const response = await fetch('https://kvaliapp-default-rtdb.europe-west1.firebasedatabase.app/chatrooms.json?auth=' +  token, {
+        const response = await fetch('https://kvaliapp-c1e89-default-rtdb.europe-west1.firebasedatabase.app/chatrooms.json?auth=' +  token, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -99,7 +102,7 @@ export const newChatMessage = (chatRoomId, message) => {
         // console.log("message", message);
                                     // Find this link for YOUR firebase, in the "Realtime Database"-tab in the firebase console
                                     // You must use YOUR link and not this link, to save data in your database and not mine.
-        const response = await fetch('https://kvaliapp-default-rtdb.europe-west1.firebasedatabase.app/chatrooms/' + chatRoomId + '/messages.json?auth=' +  token, {
+        const response = await fetch('https://kvaliapp-c1e89-default-rtdb.europe-west1.firebasedatabase.app/chatrooms/' + chatRoomId + '/messages.json?auth=' +  token, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

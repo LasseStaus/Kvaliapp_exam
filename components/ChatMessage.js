@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, Button, StyleSheet, Image } from 'react-native';
 
+import {useSelector} from 'react-redux';
 const ChatMessage = props => {
     //props.chatmessage
     //show image if not "me".
@@ -8,7 +9,9 @@ const ChatMessage = props => {
     //show time if time is not the same as previous time and same user
     //show date if this message contains a new date compared to previous.
     
-    const hardcodedUserId = '1';
+    const realTimeUserId = useSelector(state => state.user.loggedInUser).id;
+
+
 
     const hours = props.chatmessage.messageTimestamp.getHours();
     const minutes = props.chatmessage.messageTimestamp.getMinutes();
@@ -16,25 +19,22 @@ const ChatMessage = props => {
     // console.log("------------------");
     // console.log(props.chatmessage);
     const userIdOfMessage = props.chatmessage.user.id;
-    const isMe = hardcodedUserId === userIdOfMessage;
-
+    
+ const isMe = realTimeUserId === userIdOfMessage;
     let name;
     if (!isMe){
         name = 'From ' + props.chatmessage.user.firstname + ' ' + props.chatmessage.user.lastname;
+    }else {
+        name = 'From ' + props.chatmessage.user.email + ' ' + props.chatmessage.user.lastname; 
     }
     // console.log("----------------: " + props.img);
     // only display the image if this message is not written by me.
-    let image;
-    if (!isMe) {
-        image = <Image
-            style={styles.tinyLogo}
-            source={ props.image } />
-    }    
+
 
     return (
         <View style={styles.outerContainer}>
             <View style={[styles.container, isMe ? styles.reverseContainer : '']}>
-                {image}
+
                 <View style={[styles.messageView, isMe ? styles.messageViewFromMe : '']}>
                     <Text style={[styles.message, isMe ? styles.messageFromMe : '']}>
                         {props.chatmessage.messageText}</Text>
@@ -72,8 +72,8 @@ const styles = StyleSheet.create({
      backgroundColor: '#EEEEEE',
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
-    borderBottomLeftRadius: 5,
-    borderBottomRightRadius: 15,
+    borderBottomLeftRadius: 15,
+    borderBottomRightRadius: 5,
     padding: 10,
  },
  messageViewFromMe: {

@@ -4,6 +4,8 @@ import { useDispatch } from 'react-redux';
 import { login, refreshToken, restoreUser } from '../store/actions/UserActions';
 import * as SecureStore from 'expo-secure-store';
 import Input from './../components/Input';
+import { useSelector } from 'react-redux';
+import { toggleUserValid } from './../store/actions/UserActions'
 
 const LoginScreen = (props:any)  => {
 
@@ -11,8 +13,10 @@ const LoginScreen = (props:any)  => {
     const goToForgotPassword = () => {
       console.log("switch page")
   }
+  const isValid = useSelector((state:any) => state.user.isValid)
     const handleLogin = () => {
-        dispatch(login(changeEmail, changePassword));
+      dispatch(toggleUserValid(!isValid));
+      dispatch(login(changeEmail, changePassword));
     }
     React.useEffect(() => {
         // Fetch the token from storage then navigate to our appropriate place
@@ -20,9 +24,8 @@ const LoginScreen = (props:any)  => {
           let userToken, user, expiration, refreshTokenString;
 
           try {
-             expiration = new Date(JSON.parse(await SecureStore.getItemAsync('expiration') || '{}'));
+             expiration = new Date(JSON.parse(await SecureStore.getItemAsync('expiration') as string));
   
-
 /*             expiration = SecureStore.getItemAsync("expiration").then((value) => {
               console.log("Get Value >> ", value);
            }); */
@@ -30,15 +33,19 @@ const LoginScreen = (props:any)  => {
             // if expiration.....
             console.log("expiration", expiration);
             console.log("now", new Date());
+
+// hvis now er senere end experience, så reload token
+
             if (expiration < new Date()) { // then it is expired
-              refreshTokenString = (await SecureStore.getItemAsync('refreshToken') || '{}');
+              refreshTokenString = (await SecureStore.getItemAsync('refreshToken') as string);
               console.log("refresh token", refreshTokenString);
                 dispatch(refreshToken(refreshTokenString));
+            } else {
+              dispatch(toggleUserValid(!isValid))
             }
-        
-
+      
             userToken = await SecureStore.getItemAsync('userToken');
-            user = JSON.parse(await SecureStore.getItemAsync('user')|| '{}');
+            user = JSON.parse(await SecureStore.getItemAsync('user') as string);
             
             // console.log(userToken);
             // console.log(user);
@@ -48,8 +55,8 @@ const LoginScreen = (props:any)  => {
             console.log("restore token failed");
             console.log(e);
           }
-    /*   ASK ABOUT THIS
-          dispatch(restoreUser(user, userToken)); */
+
+           dispatch(restoreUser(user, userToken));  
         };
     
         bootstrapAsync();
@@ -88,7 +95,7 @@ const LoginScreen = (props:any)  => {
 <Pressable  style={styles.authenticationButton}  onPress={handleLogin}>
             <Text style={styles.buttonText}>Log in</Text>
         </Pressable>
-        <Text style={styles.text}>Don't have an account? <Text style={styles.link} onPress={ () => props.navigation.navigate('Signup') }>Sign up</Text></Text>
+        <Text style={styles.text}>Don't have an account? <Text style={styles.link} onPress={ () => props.navigation.navigate('SIGNUPOUTER') }>Sign up</Text></Text>
           
       </View>
   );

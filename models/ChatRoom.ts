@@ -15,7 +15,7 @@ class ChatRoom {
         return 12;
     }
 
-    constructor(private chatRoomId: string, public imageUrl: string, 
+    constructor(private chatRoomId: string, public imageUrl: any, 
         private chatRoomName: string, public messages: any[]) {
         
             this.chatRoomId = chatRoomId;

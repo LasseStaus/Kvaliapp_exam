@@ -35,7 +35,7 @@ const ChatMessagesScreen = props => {
                     <ChatMessage chatmessage={itemData.item} image={require('./../assets/ac99082f65d5c636e14e70785817899e.png')}></ChatMessage> 
                 )} keyExtractor={item => item.messageId}></FlatList>
             </View>
-            
+
             <View style={styles.inputView}>
                 <Image
                     style={styles.tinyLogo}
@@ -48,7 +48,6 @@ const ChatMessagesScreen = props => {
 
                 <Button title="Send" onPress={handleSend}></Button>
             </View>
-
     </View>
  );
 }
