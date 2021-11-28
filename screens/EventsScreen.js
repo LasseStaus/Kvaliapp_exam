@@ -14,7 +14,7 @@ const EventsScreen = props => {
    const dispatch = useDispatch(); // helps to dispatch an action
 
    React.useEffect(() => { // peform side effects inside funtion
-      console.log("fetching events");
+    /*   console.log("fetching events"); */
       dispatch(fetchEvents()); // fetch events from EventsActions.js
    }, []);
 

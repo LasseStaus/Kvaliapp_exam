@@ -16,12 +16,14 @@ export const fetchEvents = () => {
         });
   
         const data = await response.json(); // json to javascript
-        console.log(data);
+/*         console.log(data); */
 
         let events = [];
         for(const key in data) {
+
         
-            events.push(new Event(key, data[key].eventName, data[key].imageUrl));
+            events.push(new Event(key,data[key].eventName,data[key].imageUrl,data[key].eventType,data[key].eventTime,data[key].eventLocation));
+
         }
 
         if (!response.ok) {

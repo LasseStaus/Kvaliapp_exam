@@ -4,19 +4,20 @@ export const SIGNUP = 'SIGNUP';
 export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
 export const REFRESH_TOKEN = 'REFRESH_TOKEN';
-
 export const TOGGLE_VALID = 'TOGGLE_VALID';
-
 export const EVENT_NOTIFICATIONS_TOGGLE = 'TOGGLE_NOTIFICATIONS_EVENT';
 export const CHAT_NOTIFICATIONS_TOGGLE = 'TOGGLE_NOTIFICATIOSNS_CHAT';
+export const UPDATE_SIGNUP_INFORMATION = 'UPDATE_SIGNUP_INFORMATION';
+
 
 import { useSelector } from 'react-redux';
 import * as SecureStore from 'expo-secure-store';
 
 const api_key = 'AIzaSyAYgqRQP-h_8D_OTDbrG3e50E-3_nyvAvg';
 
-export const restoreUser = (user: any, token: any) => {
-    return { type: LOGIN, payload: { user, token } };
+export const restoreUser = (user: any, token: any, isValid:boolean) => {
+    console.log("login2 is valid", isValid)
+    return { type: LOGIN, payload: { user, token, isValid } };
 }
 
 export const toggleUserValid = (isValid: any) => {
@@ -82,8 +83,7 @@ export const login = (email: string, password: string) => {
         if (!response.ok) {
             //There was a problem..
         } else {
-
-            const user = new User(data.localId, '', '', '', email);
+            const user = new User(data.localId, '', '', '', email, '','');
             SecureStore.setItemAsync('userToken', data.idToken);
             SecureStore.setItemAsync('user', JSON.stringify(user));
             let expiration = new Date();
@@ -144,8 +144,22 @@ export const signup = (email: any, password: any, props: any) => {
         if (!response.ok && !responseRealtime.ok) {
             //There was a problem..
         } else {
+
+
+
+
+            
             console.log('find navn her', responseRealtime);
             const user = new User(dataRealtime.name, '', '', '', email, '', false, false);
+
+            SecureStore.setItemAsync('userToken', data.idToken);
+
+            let expiration = new Date();
+            //token sættes en time foran
+            expiration.setSeconds(expiration.getSeconds() + parseInt(data.expiresIn));
+            SecureStore.setItemAsync('expiration', JSON.stringify(expiration));
+            SecureStore.setItemAsync('refreshToken', data.refreshToken);
+            
             
             dispatch({ type: SIGNUP, payload: { user, token: data.idToken } })   
             props.navigation.navigate('OnboardUserinfoScreen') // working
@@ -154,16 +168,16 @@ export const signup = (email: any, password: any, props: any) => {
 };
 
 
-export const updateUser = (fullName:string, studyProgramme:string, userInfoId:string, isValid:any, props:any) => {
+export const updateUser = (fullName:string, studyProgramme:string, userInfo:any, isValid:any, props:any) => {
     // console.log(name, studyProg, token);
     // console.log(email + " " + password);
     console.log('vi er her0');
-    console.log(fullName, studyProgramme, userInfoId, isValid);
+    console.log(fullName, studyProgramme, userInfo, isValid);
    return async (dispatch: any, getState: any) => { // redux thunk
 
     const token = getState().user.token;
     // console.log("again" + email + " " + password);
-    const response = await fetch('https://kvaliapp-c1e89-default-rtdb.europe-west1.firebasedatabase.app/userinfo/' + userInfoId + '/.json?auth=' +  token, {
+    const response = await fetch('https://kvaliapp-c1e89-default-rtdb.europe-west1.firebasedatabase.app/userinfo/' + userInfo.id + '/.json?auth=' +  token, {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json'
@@ -185,14 +199,17 @@ export const updateUser = (fullName:string, studyProgramme:string, userInfoId:st
         props.navigation.navigate('NotificationScreen') // working
         //     const user = new User(data.localId, data.firstname, '', '', email, data.studyProg);
         //    dispatch({type: SIGNUP, payload: { user, token: data.idToken } })
+        const user = new User(userInfo.id, fullName, userInfo.lastname, userInfo.imageUrl, userInfo.email, studyProgramme, userInfo.chatToggle, userInfo.eventToggle); 
+        SecureStore.setItemAsync('user', JSON.stringify(user));
+        dispatch({type: UPDATE_SIGNUP_INFORMATION, payload: user })
        }
    };
 };
 
-export const updateNotificationOnboardFlow = (setNotification: any, userInfo:any, props:any) => {
+export const updateNotificationOnboardFlow = (userInfo:any, props:any) => {
     // console.log(name, studyProg, token);
     // console.log(email + " " + password);
-    console.log('vi er her updateNotification', setNotification);
+
    return async (dispatch: any, getState: any) => { // redux thunk
 
     const token = getState().user.token;
@@ -203,8 +220,8 @@ export const updateNotificationOnboardFlow = (setNotification: any, userInfo:any
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({ 
-            chatToggle:!setNotification,
-            eventToggle:!setNotification,
+            chatToggle:true,
+            eventToggle:true,
         })
     });
        const data = await response.json(); // json to javascript
@@ -213,12 +230,11 @@ export const updateNotificationOnboardFlow = (setNotification: any, userInfo:any
            //There was a problem..
            console.log(response);
        } else {
-        console.log('vi er her updateNotification', setNotification);
-        console.log(setNotification)
-        props.navigation.navigate('AppTutorialScreen1')
-        const user = new User(userInfo.id, userInfo.firstName, userInfo.lastName, userInfo.imageUrl, userInfo.email, userInfo.studyProgramme, !userInfo.eventToggle, !userInfo.eventToggle); 
+        const user = new User(userInfo.id, userInfo.firstname, userInfo.lastname, userInfo.imageUrl, userInfo.email, userInfo.studyProgramme, true, true); 
+        SecureStore.setItemAsync('user', JSON.stringify(user));
         dispatch({type: EVENT_NOTIFICATIONS_TOGGLE, payload: user})
         dispatch({type: CHAT_NOTIFICATIONS_TOGGLE, payload: user}) 
+        props.navigation.navigate('AppTutorialScreen1')
  /*        props.navigation.navigate('NotificationScreen')  */// working
         //     const user = new User(data.localId, data.firstname, '', '', email, data.studyProg);
         //    dispatch({type: SIGNUP, payload: { user, token: data.idToken } })
@@ -226,5 +242,52 @@ export const updateNotificationOnboardFlow = (setNotification: any, userInfo:any
    };
 };
 
-
+export const toggleChatNotification = (userInfo:any, setNotificationBoolean: boolean) => {
+   return async (dispatch: any, getState: any) => { // redux thunk
+    const token = getState().user.token;
+    const response = await fetch('https://kvaliapp-c1e89-default-rtdb.europe-west1.firebasedatabase.app/userinfo/' + userInfo.id + '/.json?auth=' +  token, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ 
+            chatToggle:!setNotificationBoolean,
+        })
+    });
+       const data = await response.json(); // json to javascript
+       console.log(data);
+       if (!response.ok) {
+           //There was a problem..
+           console.log(response);
+       } else {
+        const user = new User(userInfo.id, userInfo.firstname, userInfo.lastname, userInfo.imageUrl, userInfo.email, userInfo.studyProgramme, !setNotificationBoolean, userInfo.eventToggle); 
+        SecureStore.setItemAsync('user', JSON.stringify(user));
+        dispatch({type: CHAT_NOTIFICATIONS_TOGGLE, payload: user}) 
+       }
+   };
+};
+export const toggleEventNotification = (userInfo:any, setNotificationBoolean: boolean) => {
+    return async (dispatch: any, getState: any) => { // redux thunk
+     const token = getState().user.token;
+     const response = await fetch('https://kvaliapp-c1e89-default-rtdb.europe-west1.firebasedatabase.app/userinfo/' + userInfo.id + '/.json?auth=' +  token, {
+         method: 'PATCH',
+         headers: {
+             'Content-Type': 'application/json'
+         },
+         body: JSON.stringify({ 
+             eventToggle:!setNotificationBoolean,
+         })
+     });
+        const data = await response.json(); // json to javascript
+        console.log(data);
+        if (!response.ok) {
+            //There was a problem..
+            console.log(response);
+        } else {
+         const user = new User(userInfo.id, userInfo.firstname, userInfo.lastname, userInfo.imageUrl, userInfo.email, userInfo.studyProgramme, userInfo.chatToggle, !setNotificationBoolean); 
+         SecureStore.setItemAsync('user', JSON.stringify(user));
+         dispatch({type: EVENT_NOTIFICATIONS_TOGGLE, payload: user}) 
+        }
+    };
+ };
 

@@ -19,7 +19,7 @@ const NotificationScreen = props => {
     const userInfo = useSelector((state) => state.user?.loggedInUser);
 
        const handleNotifications = () => {
-            dispatch(updateNotificationOnboardFlow(true, userInfo, props )); 
+            dispatch(updateNotificationOnboardFlow(userInfo, props)); 
        }
      
        React.useEffect(() => {

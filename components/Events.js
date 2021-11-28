@@ -1,28 +1,22 @@
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { View, Text, Button, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+ import { LinearGradient } from 'expo-linear-gradient'; 
 
-import TimeIcon from './TimeIcon';
+/* import TimeIcon from './TimeIcon';
 import LocationIcon from './LocationIcon';
-import InformationIcon from './InfoIcon';
+import InformationIcon from './InfoIcon'; */
 
 
 const Events = props => {
     const navigation = useNavigation(); 
-    console.log(props.event.eventId);
+
     let image = props.event.imageUrl
     return (
 
     <View>
 
-  
-        
-      
         <TouchableOpacity onPress={() => navigation.navigate("Event", {id: props.event.eventId})}>
-
-      
-
         <View style={styles.flatListWrapper}>
             
         <Image

@@ -24,12 +24,12 @@ const OnboardUserinfoScreen = (props: any) => {
   const [studyProgramme, setChangePassword] = useState("");
   const [studyProgrammeValid, setPasswordValid] = useState(false);
   
-  const userInfoId = useSelector((state: any) => state.user?.loggedInUser?.id );
-  console.log('User', userInfoId)
+  const userInfo = useSelector((state: any) => state.user?.loggedInUser );
+  console.log('User', userInfo)
   /*      const userInfo = useSelector((state:any) => state.user.loggedInUser);
        console.log('vi kigger efter den her',userInfo) */
   const handleOnboardingUser = () => {
-    dispatch(updateUser(fullName, studyProgramme, userInfoId, isValid, props));
+    dispatch(updateUser(fullName, studyProgramme, userInfo, isValid, props));
     //dispatch(toggleUserValid(!isValid))
     // skifter fortegnet på boolean. action creater toggle happy.
   }

@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SignupOnboardStackNavigator from './SignupOnboardStackNavigator';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import ChatStackNavigator from './ChatStackNavigator';
+import EventStackNavigator from './EventStackNavigator';
 import HomeScreen from './../screens/HomeScreen';
 import DiscoverScreen from './../screens/DiscoverScreen';
 import MenuScreen from './../screens/MenuScreen';
@@ -42,7 +43,7 @@ const Navigation = props => {
               iconName = focused
                 ? 'home'
                 : 'home-outline';
-            } else if (route.name === 'Discover') {
+            } else if (route.name === 'DiscoverOuter') {
               iconName = focused ? 'search' : 'search-outline';
             }else if (route.name === 'ChatOuter') {
                 iconName = focused ? 'ios-chatbubbles' : 'ios-chatbubbles-outline';
@@ -75,7 +76,8 @@ const Navigation = props => {
             }
         })}>
         <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="Discover" component={DiscoverScreen} />
+ 
+        <Tab.Screen name="DiscoverOuter" component={EventStackNavigator} options={{ title: 'DISCOVER', headerShown: false }} />
         <Tab.Screen name="ChatOuter" component={ChatStackNavigator}options={{ title: 'CHAT' , headerShown: false }}  />
         <Tab.Screen name="Menu" component={MenuScreen} />
         </Tab.Navigator>

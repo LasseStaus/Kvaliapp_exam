@@ -126,26 +126,26 @@ const [fullData, setFullData] = useState([]);
     </TouchableOpacity>
 
     
-{/*  UNCOMMENT THIS TO GET ALL THREE BUTTONS
-
-    <TouchableOpacity title="All Student organisations" style={styles.button2} onPress={() => props.navigation.navigate("Organisations")}>
-    <Image style={styles.image} source={require("./../assets/IMG_8080.png")}/>
+{  /* UNCOMMENT THIS TO GET ALL THREE BUTTONS
+ */
+    <TouchableOpacity title="All Student organisations" style={styles.button2} onPress={() => props.navigation.navigate("Events")}>
+    <Image style={styles.image} source={require("./../assets/imgs/IMG_7066.png")}/>
     <Text style={styles.eventTouchText}>
           ALL STUDENT ORGANISATIONS
-        </Text>     
-    </TouchableOpacity> */}
+        </Text>    
+    </TouchableOpacity> }
 
- {/*    <TouchableOpacity title="All Posts" style={styles.button3} onPress={() => props.navigation.navigate("Posts")}>
-    <Image style={styles.image} source={require("./../assets/IMG_9090.png")}/>
+ {    <TouchableOpacity title="All Posts" style={styles.button3} onPress={() => props.navigation.navigate("Events")}>
+    <Image style={styles.image} source={require("./../assets/imgs/IMG_7066.png")}/>
     <Text style={styles.eventTouchText}>
         ALL POSTS
         </Text>     
-    </TouchableOpacity> */}
+    </TouchableOpacity> }
 
       
   {/* // WORKING SEARCH FLATLIST UNCOMMENT TO SEE */}
 
-    <Text style={styles.text}>Search events</Text>
+    {/* <Text style={styles.text}>Search events</Text>
     <FlatList
       ListHeaderComponent={renderHeader}
       data={data}
@@ -163,7 +163,7 @@ const [fullData, setFullData] = useState([]);
           </View>
         </View>
       )}
-    /> 
+    />  */}
 
   </View>
 

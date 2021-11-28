@@ -12,11 +12,11 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 const AppTutorialScreen1 = props => {
 
   // radio buttons 
-  const userInfoId = useSelector((state) => state.user?.loggedInUser );
+  const userInfo = useSelector((state) => state.user?.loggedInUser );
   React.useEffect(() => {
-    console.log('ligem her', userInfoId);
+    console.log('ligem her', userInfo);
   
- }, [userInfoId]);
+ }, [userInfo]);
 
   // dispatch
   const dispatch = useDispatch();
@@ -39,14 +39,6 @@ const AppTutorialScreen1 = props => {
           justifyContent: 'center',
           marginTop: 52,
           margin: 12,
-
-
-
-
-
-
-
-
         }} source={require('./../assets/imgs/onboardingimg2.png')} />
       </View>
 
@@ -71,15 +63,7 @@ const AppTutorialScreen1 = props => {
           </View>
         </TouchableOpacity>
       </View>
-
-
-
-
-
-
     </View>
-
-
   );
 }
 
@@ -91,15 +75,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'white',
-
-
-
   },
-
   circleWrap: {
     flexDirection: 'row',
     marginBottom: 5,
-
   },
 
   outerCircle1: {
@@ -110,7 +89,6 @@ const styles = StyleSheet.create({
     borderColor: 'grey',
     backgroundColor: '#5050A5',
     marginRight: 10,
-
   },
   outerCircle2: {
     width: 12,
@@ -132,7 +110,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#5050A5',
     opacity: 0.10,
     marginRight: 10,
-
   },
 
 
@@ -142,9 +119,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'white',
     marginTop: 272,
-
-
-
   },
 
   inLine: {
@@ -159,9 +133,6 @@ const styles = StyleSheet.create({
     width: 300,
     marginTop: 0,
     marginBottom: 20,
-
-
-
   },
 
   imgWrap: {
@@ -169,7 +140,6 @@ const styles = StyleSheet.create({
     height: 200,
     marginTop: 0,
     marginBottom: 0,
-
   },
 
   wrapper: {

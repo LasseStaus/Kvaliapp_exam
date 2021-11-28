@@ -1,11 +1,12 @@
 import React from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import {StyleSheet } from 'react-native';
 
+import EventsScreen from './EventsScreen';
 const HomeScreen = props => {
  return (
-    <View>
-        <Text>This is the home screen</Text>
-    </View>
+   
+        <EventsScreen></EventsScreen>
+
  );
 }
 
