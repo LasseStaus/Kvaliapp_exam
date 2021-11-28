@@ -8,7 +8,7 @@ const Stack = createNativeStackNavigator();
 
 export default function EventStackNavigator() {
     return (
-        <Stack.Navigator>
+        <Stack.Navigator  >
             <Stack.Screen name="Discover" component={DiscoverScreen} />
             <Stack.Screen name="Events" component={EventsScreen} />
             <Stack.Screen name="Event" component={EventScreen} />

@@ -7,10 +7,10 @@ const Stack = createNativeStackNavigator();
 
 export default function ChatStackNavigator() {
     return (
-        <Stack.Navigator>
-            <Stack.Screen name="Chat" component={ChatScreen} />
-            <Stack.Screen name="ChatMessages" component={ChatMessagesScreen} 
-            options={{ title: 'Chat Messages' }}/>
+        <Stack.Navigator >
+            <Stack.Screen name="Chat" component={ChatScreen} options={{ title: 'Chat' }} />
+            <Stack.Screen name="ChatMessages" component={ChatMessagesScreen}
+                options={{ title: 'Chat Messages' }} />
         </Stack.Navigator>
     )
 };

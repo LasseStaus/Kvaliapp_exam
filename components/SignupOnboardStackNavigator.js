@@ -12,11 +12,51 @@ const Stack = createNativeStackNavigator();
 
 export default function SignupOnboardStackNavigator() {
     return (
-        <Stack.Navigator>
-            <Stack.Screen name="SIGNUP" component={SignupScreen}  />
-            <Stack.Screen name="Terms" component={TermsAndConditionsScreen}  />
-            <Stack.Screen name="OnboardUserinfoScreen" component={OnboardUserinfoScreen}  />
-            <Stack.Screen name="NotificationScreen" component={NotificationScreen}  />
+        <Stack.Navigator
+            screenOptions={({ route }) => ({
+                tabBarIcon: ({ focused, color, size }) => {
+                    let iconName;
+
+                    if (route.name === 'Home') {
+                        iconName = focused
+                            ? 'home'
+                            : 'home-outline';
+                    } else if (route.name === 'DiscoverOuter') {
+                        iconName = focused ? 'search' : 'search-outline';
+                    } else if (route.name === 'ChatOuter') {
+                        iconName = focused ? 'ios-chatbubbles' : 'ios-chatbubbles-outline';
+                    } else if (route.name === 'Menu') {
+                        iconName = focused ? 'menu' : 'menu-outline';
+                    }
+                    else if (route.name === 'Menu') {
+                        iconName = focused ? 'menu' : 'menu-outline';
+                    }
+
+                    // You can return any component that you like here!
+                    return <Ionicons name={iconName} size={size} color={color} />;
+                },
+                tabBarActiveTintColor: '#5050A5',
+                tabBarInactiveTintColor: 'gray',
+                tabBarStyle: {
+
+                    backgroundColor: 'white',
+                },
+                tabBarLabelStyle: {
+                    fontFamily: "TekoMedium",
+                    textTransform: 'uppercase',
+                    fontWeight: 'bold'
+                },
+                headerTitleStyle: {
+
+                },
+                headerStyle: {
+
+                }
+            })}>
+            <Stack.Screen name="SIGNUP" component={SignupScreen} />
+            <Stack.Screen name="Terms" component={TermsAndConditionsScreen} />
+            <Stack.Screen name="OnboardUserinfoScreen" component={OnboardUserinfoScreen} />
+            <Stack.Screen name="NotificationScreen" component={NotificationScreen} />
             <Stack.Screen name="AppTutorialScreen1" component={AppTutorialScreen1} options={{ headerShown: false }} />
             <Stack.Screen name="AppTutorialScreen2" component={AppTutorialScreen2} options={{ headerShown: false }} />
             <Stack.Screen name="AppTutorialScreen3" component={AppTutorialScreen3} options={{ headerShown: false }} />
