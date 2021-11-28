@@ -13,8 +13,6 @@ const SignupScreen = (props: any) => {
     const [changeEmail, setChangeEmail] = useState(''); // lift up
     const [emailValid, setNameValid] = useState(false); // lift up - pass through props instead
 
-
-
     //const [email, onChangeEmail] = useState("");
     const [changePassword, setChangePassword] = useState("");
     const [passwordValid, setPasswordValid] = useState(false);
@@ -27,7 +25,6 @@ const SignupScreen = (props: any) => {
 
     const handleSignup = () => {
         dispatch(signup(changeEmail, changePassword, props));
-     
     }
     const goToTermsAndConditions = () => {
         console.log("switch page")
@@ -69,7 +66,7 @@ const SignupScreen = (props: any) => {
             checked={checked}
             onPress={() => setChecked(!checked)}
       />
-        <Text style={styles.text}>I agree to the <Text style={styles.link} onPress={goToTermsAndConditions}>terms and conditions</Text></Text>
+        <Text style={styles.text}>I agree to the <Text style={styles.link} onPress={() => props.navigation.navigate('Terms')}>terms and conditions</Text></Text>
         </View>
         <Pressable disabled={!checked } style={!checked ? styles.authenticationButtonInactive: styles.authenticationButton}  onPress={handleSignup}>
             <Text style={styles.buttonText}>Get Access</Text>

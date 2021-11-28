@@ -6,7 +6,7 @@ export const LOGOUT = 'LOGOUT';
 export const REFRESH_TOKEN = 'REFRESH_TOKEN';
 export const TOGGLE_VALID = 'TOGGLE_VALID';
 export const EVENT_NOTIFICATIONS_TOGGLE = 'TOGGLE_NOTIFICATIONS_EVENT';
-export const CHAT_NOTIFICATIONS_TOGGLE = 'TOGGLE_NOTIFICATIOSNS_CHAT';
+export const CHAT_NOTIFICATIONS_TOGGLE = 'TOGGLE_NOTIFICATIONS_CHAT';
 export const UPDATE_SIGNUP_INFORMATION = 'UPDATE_SIGNUP_INFORMATION';
 
 
@@ -145,10 +145,6 @@ export const signup = (email: any, password: any, props: any) => {
             //There was a problem..
         } else {
 
-
-
-
-            
             console.log('find navn her', responseRealtime);
             const user = new User(dataRealtime.name, '', '', '', email, '', false, false);
 
@@ -184,7 +180,6 @@ export const updateUser = (fullName:string, studyProgramme:string, userInfo:any,
         },
         body: JSON.stringify({ 
             firstname:fullName,
-    
             studyProgramme:studyProgramme,
         })
     });
@@ -200,20 +195,16 @@ export const updateUser = (fullName:string, studyProgramme:string, userInfo:any,
         //     const user = new User(data.localId, data.firstname, '', '', email, data.studyProg);
         //    dispatch({type: SIGNUP, payload: { user, token: data.idToken } })
         const user = new User(userInfo.id, fullName, userInfo.lastname, userInfo.imageUrl, userInfo.email, studyProgramme, userInfo.chatToggle, userInfo.eventToggle); 
-        SecureStore.setItemAsync('user', JSON.stringify(user));
+       // SecureStore.setItemAsync('user', JSON.stringify(user));
         dispatch({type: UPDATE_SIGNUP_INFORMATION, payload: user })
        }
    };
 };
 
 export const updateNotificationOnboardFlow = (userInfo:any, props:any) => {
-    // console.log(name, studyProg, token);
-    // console.log(email + " " + password);
-
    return async (dispatch: any, getState: any) => { // redux thunk
-
     const token = getState().user.token;
-    // console.log("again" + email + " " + password);
+
     const response = await fetch('https://kvaliapp-c1e89-default-rtdb.europe-west1.firebasedatabase.app/userinfo/' + userInfo.id + '/.json?auth=' +  token, {
         method: 'PATCH',
         headers: {
@@ -231,7 +222,7 @@ export const updateNotificationOnboardFlow = (userInfo:any, props:any) => {
            console.log(response);
        } else {
         const user = new User(userInfo.id, userInfo.firstname, userInfo.lastname, userInfo.imageUrl, userInfo.email, userInfo.studyProgramme, true, true); 
-        SecureStore.setItemAsync('user', JSON.stringify(user));
+       // SecureStore.setItemAsync('user', JSON.stringify(user));
         dispatch({type: EVENT_NOTIFICATIONS_TOGGLE, payload: user})
         dispatch({type: CHAT_NOTIFICATIONS_TOGGLE, payload: user}) 
         props.navigation.navigate('AppTutorialScreen1')
@@ -261,7 +252,7 @@ export const toggleChatNotification = (userInfo:any, setNotificationBoolean: boo
            console.log(response);
        } else {
         const user = new User(userInfo.id, userInfo.firstname, userInfo.lastname, userInfo.imageUrl, userInfo.email, userInfo.studyProgramme, !setNotificationBoolean, userInfo.eventToggle); 
-        SecureStore.setItemAsync('user', JSON.stringify(user));
+       // SecureStore.setItemAsync('user', JSON.stringify(user));
         dispatch({type: CHAT_NOTIFICATIONS_TOGGLE, payload: user}) 
        }
    };
@@ -285,9 +276,78 @@ export const toggleEventNotification = (userInfo:any, setNotificationBoolean: bo
             console.log(response);
         } else {
          const user = new User(userInfo.id, userInfo.firstname, userInfo.lastname, userInfo.imageUrl, userInfo.email, userInfo.studyProgramme, userInfo.chatToggle, !setNotificationBoolean); 
-         SecureStore.setItemAsync('user', JSON.stringify(user));
+        // SecureStore.setItemAsync('user', JSON.stringify(user));
          dispatch({type: EVENT_NOTIFICATIONS_TOGGLE, payload: user}) 
         }
     };
  };
 
+ export const updateGoingUser = (eventId: any, user: any) => {
+    // console.log(name, studyProg, token);
+    // console.log(email + " " + password);
+    console.log('vi er her');
+    console.log(eventId, user)
+    return async (dispatch: any, getState: any) => { // redux thunk
+
+        const token = getState().user.token;
+        // console.log("again" + email + " " + password);
+        const response = await fetch('https://kvaliapp-c1e89-default-rtdb.europe-west1.firebasedatabase.app/events/' + eventId + '/goingUsers.json?auth=' + token, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                ...user
+            })
+        });
+
+        const data = await response.json(); // json to javascript
+        console.log(data);
+        if (!response.ok) {
+            //There was a problem..
+            console.log(response);
+        } else {
+            console.log('goingUserAdded');
+
+            //console.log(isValid);
+            //dispatch(toggleUserValid(!isValid));
+            //     const user = new User(data.localId, data.firstname, '', '', email, data.studyProg);
+            //    dispatch({type: SIGNUP, payload: { user, token: data.idToken } })
+        }
+    };
+};
+
+export const updateInterestedUser = (eventId: any, user: any) => {
+    // console.log(name, studyProg, token);
+    // console.log(email + " " + password);
+    console.log('vi er her');
+    console.log(eventId, user)
+    return async (dispatch: any, getState: any) => { // redux thunk
+
+        const token = getState().user.token;
+        // console.log("again" + email + " " + password);
+        const response = await fetch('https://kvaliapp-c1e89-default-rtdb.europe-west1.firebasedatabase.app/events/' + eventId + '/interestedUsers.json?auth=' + token, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                ...user
+            })
+        });
+
+        const data = await response.json(); // json to javascript
+        console.log(data);
+        if (!response.ok) {
+            //There was a problem..
+            console.log(response);
+        } else {
+            console.log('interestedUserAdded');
+
+            //console.log(isValid);
+            //dispatch(toggleUserValid(!isValid));
+            //     const user = new User(data.localId, data.firstname, '', '', email, data.studyProg);
+            //    dispatch({type: SIGNUP, payload: { user, token: data.idToken } })
+        }
+    };
+};

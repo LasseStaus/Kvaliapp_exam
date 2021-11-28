@@ -33,7 +33,7 @@ const Input = ( {label='My default value', placeholder, secure, text, error, nam
             secureTextEntry={secure}
             onChangeText={handleNewInput}
             onBlur={() => setTouched(true)}></TextInput>
-            {!nameValid && touched && <Text>{error}</Text>}
+            {!nameValid && touched && <Text style={styles.error}>{error}</Text>}
             
       </View>
    );
@@ -50,8 +50,19 @@ const styles = StyleSheet.create({
        fontSize: 12,
        fontFamily: 'TekoMedium',
        fontWeight:'bold',
-       color: '#32305D'
-   }
+       color: '#32305D',
+       position: 'relative'
+   },
+   error: {
+       color: 'red',
+       fontSize: 10,
+
+
+position: 'absolute',
+right: 0,
+transform: [{ translateY: 6 }],
+
+    }
 });
 
 export default Input;

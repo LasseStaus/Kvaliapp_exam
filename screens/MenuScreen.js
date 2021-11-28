@@ -8,40 +8,18 @@ import { toggleChatNotification, toggleEventNotification } from './../store/acti
 
 const MenuScreen = props => {
    const dispatch = useDispatch();
-   // const [changeName, setChangeName] = useState(profileInfo.name);
-   // const [nameValid, setNameValid] = useState(false);
 
-
-   // SWITCH TOGGLERS // one for chats and one for events.
-   /*    const [notificationStateChatBoolean, setIsEnabled] = useState(false); */
-   /*    const toggleChatNotifications = () => setIsEnabled(previousState => !previousState); */
-   const isValid = useSelector((state) => state.user.isValid)
    const userInfo = useSelector((state) => state.user.loggedInUser)
-   const userInfoChatToggle = useSelector((state) => state.user.loggedInUser.chatToggle)
-   /* const [notificationStateChatBoolean, setIsEnabled] = useState(userInfo.chatToggle); */
 
    const toggleChatNotifications = () => {
       console.log(userInfo, userInfo.chatToggle);
       dispatch(toggleChatNotification(userInfo, userInfo.chatToggle));
-      /*    setIsEnabled(previousState => !previousState)
-         console.log(notificationStateChatBoolean); */
-
    }
 
    const toggleEventNotifications = () => {
-      console.log(userInfo, userInfo.chatToggle);
-      dispatch(toggleEventNotification(userInfo, userInfo.eventToggle));
-      /*    setIsEnabled(previousState => !previousState)
-         console.log(notificationStateChatBoolean); */
-
+      console.log(userInfo, userInfo.eventToggle);
+      dispatch(toggleEventNotification(userInfo, userInfo.eventToggle)); 
    }
-
-
-
-
-   /*    const [notificationStateEventBoolean, setEventIsEnabled] = useState(false);
-      const toggleEventNotifications = () => setEventIsEnabled(previousState => !previousState); */
-
 
    return (
       <View style={styles.container}>

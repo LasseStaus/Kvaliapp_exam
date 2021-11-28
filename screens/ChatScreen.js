@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, Button, StyleSheet, FlatList, TextInput, TouchableOpacity, Image } from 'react-native';
+import { View, Text, Button, StyleSheet, FlatList, TextInput, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-
 
 import ChatRoom from './../components/ChatRoom'
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,105 +8,119 @@ import { useDispatch, useSelector } from 'react-redux';
 import { toggleHappy, newChatRoom, deleteChatRoom, fetchChatRooms } from './../store/actions/ChatActions';
 import defaultStyles from './../GeneralStyles';
 
-const ChatScreen = props => {
-   const isHappy = useSelector(state => state.chat.isHappy);
-   const chatRooms = useSelector(state => state.chat.chatRooms);
+// BUTTONS 
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
-   const [text, onChangeText] = useState("");
-   const dispatch = useDispatch();
+const ChatScreen = (props) => {
+  const isHappy = useSelector(state => state.chat.isHappy);
+  const chatRooms = useSelector(state => state.chat.chatRooms);
 
-   const handleChristianHappy = () => {
-      dispatch(toggleHappy(!isHappy));
-   };
+  const [text, onChangeText] = useState("");
+  const dispatch = useDispatch();
+
+  /*   const handleChristianHappy = () => {
+       dispatch(toggleHappy(!isHappy));
+    }; */
+    const userinfo = useSelector(state => state.user);
+
+  React.useEffect(() => {
+    console.log("user ", userinfo);
+    dispatch(fetchChatRooms());
+  }, [userinfo]);
 
 
-   React.useEffect(() => {
-      console.log("fetching chatrooms");
-      dispatch(fetchChatRooms());
-   }, []);
 
-   
+  return (
+    <View style={styles.container}>
 
-   return (
-      <View style={styles.container}>
       <View style={styles.banner}>
 
-        <Text style={styles.bannerTxt}>Enable notifications to stay in the loop</Text> 
-        <TouchableOpacity style={styles.smallBox} onPress={ () => props.navigation.navigate('NOTIFCATIONS')} >
-        <Image
-        /* style={styles.tinyLogo} */
-        source = {require('./../assets/imgs/notificationIcon.png')} />
-        </TouchableOpacity> 
-      </View>   
-       <TextInput style={defaultStyles.textInput} onChangeText={onChangeText} value={text} />
-    
-       <View style={styles.flex}>
-       <TouchableOpacity onPress={() => dispatch(newChatRoom(text))}>
-        <View style={styles.buttonCreate}>
-          <Text style={styles.buttonTextBlack}>create chatroom</Text>
-        </View>
-      </TouchableOpacity>
+        <Text style={styles.bannerTxt}>Enable notifications to stay in the loop</Text>
+        <TouchableOpacity style={styles.smallBox} onPress={() => props.navigation.navigate('MENU')} >
+          <Image style={{
+            width: 20,
+            height: 20,
 
-      <TouchableOpacity onPress={() => dispatch(deleteChatRoom(text))}>
-        <View style={styles.buttonDelete}>
-          <Text style={styles.buttonText}>delete chatroom</Text>
-        </View>
-      </TouchableOpacity>
+            marginLeft: 10,
+
+
+
+
+          }} source={require('./../assets/imgs/icons8-alarm.png')} />
+        </TouchableOpacity>
+
       </View>
 
-      
-        
-        <FlatList
-          data={chatRooms}
-          renderItem={itemData => (
-              <ChatRoom chatroom={itemData.item}></ChatRoom>
-          )}
-          keyExtractor={item => item.chatRoomId}
+
+      <TextInput style={defaultStyles.textInput} onChangeText={onChangeText} value={text} />
+
+      <View style={styles.flex}>
+        <TouchableOpacity onPress={() => dispatch(newChatRoom(text))}>
+          <View style={styles.buttonCreate}>
+            <Text style={styles.buttonTextBlack}>create chatroom</Text>
+          </View>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => dispatch(deleteChatRoom(text))}>
+          <View style={styles.buttonDelete}>
+            <Text style={styles.buttonText}>delete chatroom</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+
+
+
+      <FlatList
+        data={chatRooms}
+        renderItem={itemData => (
+          <ChatRoom chatroom={itemData.item}></ChatRoom>
+        )}
+        keyExtractor={item => item.chatRoomId}
       />
     </View>
- );
+  );
 }
 
 const styles = StyleSheet.create({
-   container: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center'
- },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
 
- smallBox: {
-  backgroundColor: '#47456E',
-  height: 40,
-  width: 40,
-  justifyContent: 'center',
-  marginTop: 12,
-  marginLeft: 45,
-  borderRadius: 5,
- },
+  smallBox: {
+    backgroundColor: '#47456E',
+    height: 40,
+    width: 40,
+    justifyContent: 'center',
+    marginTop: 12,
+    marginLeft: 45,
+    borderRadius: 5,
+  },
 
- banner: {
-  backgroundColor: '#32305D',
-  height: 64,
-  width: 375,
-  flexDirection: 'row',
- },
-
- bannerTxt: {
-  color: 'snow',
-  textAlign: 'left',
-  justifyContent: 'center',
-  paddingHorizontal: 20,
-  paddingVertical: 25,
-  fontSize: 12,
-  fontWeight: 'bold',
- },
-
- flex: {
+  banner: {
+    backgroundColor: '#32305D',
+    height: 64,
+    width: 375,
     flexDirection: 'row',
-    
- },
+  },
 
- buttonCreate: {
+  bannerTxt: {
+    color: 'snow',
+    textAlign: 'left',
+    justifyContent: 'center',
+    paddingHorizontal: 20,
+    paddingVertical: 25,
+    fontSize: 12,
+    fontWeight: 'bold',
+  },
+
+  flex: {
+    flexDirection: 'row',
+
+  },
+
+  buttonCreate: {
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 12,
@@ -116,7 +129,7 @@ const styles = StyleSheet.create({
     elevation: 3,
     width: 200,
     backgroundColor: 'greenyellow',
-    
+
   },
 
   buttonDelete: {
@@ -128,7 +141,7 @@ const styles = StyleSheet.create({
     elevation: 3,
     width: 200,
     backgroundColor: 'red',
-    
+
   },
 
   buttonText: {
@@ -137,7 +150,7 @@ const styles = StyleSheet.create({
     padding: 10,
     color: 'snow',
     textTransform: 'uppercase',
-    fontWeight: 'bold',  
+    fontWeight: 'bold',
   },
 
   buttonTextBlack: {
@@ -146,9 +159,9 @@ const styles = StyleSheet.create({
     padding: 10,
     color: 'black',
     textTransform: 'uppercase',
-    fontWeight: 'bold',  
+    fontWeight: 'bold',
   },
-   
+
 });
 
 export default ChatScreen;

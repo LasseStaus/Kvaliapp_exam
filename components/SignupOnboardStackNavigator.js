@@ -6,6 +6,7 @@ import NotificationScreen from '../screens/NotificationScreen'
 import AppTutorialScreen1 from '../screens/appTutorialScreen1';
 import AppTutorialScreen2 from '../screens/appTutorialScreen2';
 import AppTutorialScreen3 from '../screens/appTutorialScreen3';
+import TermsAndConditionsScreen from '../screens/termsAndConditions';
 
 const Stack = createNativeStackNavigator();
 
@@ -13,6 +14,7 @@ export default function SignupOnboardStackNavigator() {
     return (
         <Stack.Navigator>
             <Stack.Screen name="SIGNUP" component={SignupScreen}  />
+            <Stack.Screen name="Terms" component={TermsAndConditionsScreen}  />
             <Stack.Screen name="OnboardUserinfoScreen" component={OnboardUserinfoScreen}  />
             <Stack.Screen name="NotificationScreen" component={NotificationScreen}  />
             <Stack.Screen name="AppTutorialScreen1" component={AppTutorialScreen1} options={{ headerShown: false }} />

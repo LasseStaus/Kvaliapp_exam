@@ -61,7 +61,7 @@ const OnboardUserinfoScreen = (props: any) => {
 
         <Input label="WHAT IS YOUR NAME"
           placeholder="First name and last name"
-          error="Email not valid"
+          error="Enter your name"
           secure={false}
           text={fullName} nameValid={fullNameValid}
           onValid={(valid: any) => setNameValid(valid)}
@@ -69,8 +69,8 @@ const OnboardUserinfoScreen = (props: any) => {
 
         <Input label="STUDY programme"
           placeholder="Select from list"
-          error="Password not valid"
-          secure={true}
+          error="Enter a study programme"
+          secure={false}
           text={studyProgramme} nameValid={studyProgrammeValid}
           onValid={(valid: any) => setPasswordValid(valid)}
           setContent={(content: any) => setChangePassword(content)} />
