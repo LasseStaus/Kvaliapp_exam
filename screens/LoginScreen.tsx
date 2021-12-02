@@ -6,6 +6,7 @@ import * as SecureStore from 'expo-secure-store';
 import Input from './../components/Input';
 import { useSelector } from 'react-redux';
 import { toggleUserValid } from './../store/actions/UserActions'
+import { logout } from '../store/actions/UserActions';
 
 const LoginScreen = (props: any) => {
 
@@ -15,39 +16,37 @@ const LoginScreen = (props: any) => {
   }
   const isValid = useSelector((state: any) => state.user.isValid)
 
+
   React.useEffect(() => {
     // Fetch the token from storage then navigate to our appropriate place
     const bootstrapAsync = async () => {
       let userToken, user, expiration, refreshTokenString;
-
       try {
         expiration = new Date(JSON.parse(await SecureStore.getItemAsync('expiration') as string));
-
         // if expiration.....
-        console.log("expiration", expiration);
-        console.log("now", new Date());
-
-
-        // hvis now er senere end experience, så reload token
+ /*        console.log("expiration", expiration);
+        console.log("now", new Date()); */
+        // hvis now er senere end expiration, så reload token
 
         if (expiration < new Date()) { // then it is expired
           refreshTokenString = (await SecureStore.getItemAsync('refreshToken') as string);
           console.log("refresh token", refreshTokenString);
-          dispatch(refreshToken(refreshTokenString));
-        } 
-
+     /*      dispatch(refreshToken(refreshTokenString)); */
+        }
         userToken = await SecureStore.getItemAsync('userToken');
-        user = JSON.parse(await SecureStore.getItemAsync('user') as string); 
+        user = JSON.parse(await SecureStore.getItemAsync('user') as string);
 
+        if(userToken) {
+          dispatch(restoreUser(user, userToken, isValid));
+        }
 
-        
       } catch (e) {
         // Restoring token failed
         console.log("restore token failed");
         console.log(e);
       }
-console.log("login is valid", isValid)
-      dispatch(restoreUser(user, userToken, !isValid));
+      console.log("login is valid loginpage", isValid)
+
     };
 
     bootstrapAsync();
@@ -61,11 +60,19 @@ console.log("login is valid", isValid)
   const [changePassword, setChangePassword] = useState("");
   const [passwordValid, setPasswordValid] = useState(false);
 
+  const something= ()=> {
+    console.log("hej")
+
+  }
   const handleLogin = () => {
-    dispatch(toggleUserValid(!isValid));
     dispatch(login(changeEmail, changePassword));
   }
-
+  const goToSignup = () => {
+    if (isValid !== false) {
+      dispatch(toggleUserValid(!isValid));
+    }
+    props.navigation.navigate('SIGNUPOUTER')
+  }
   return (
     <View style={styles.container}>
       <Image
@@ -78,7 +85,9 @@ console.log("login is valid", isValid)
           placeholder="Enter your email"
           error="Email not valid"
           secure={false}
+          
           text={changeEmail} nameValid={emailValid}
+          removeError={something}
           onValid={(valid: any) => setNameValid(valid)}
           setContent={(content: any) => setChangeEmail(content)} />
 
@@ -86,6 +95,7 @@ console.log("login is valid", isValid)
           placeholder="Enter your password"
           error="Password not valid"
           secure={true}
+          removeError={something}
           text={changePassword} nameValid={passwordValid}
           onValid={(valid: any) => setPasswordValid(valid)}
           setContent={(content: any) => setChangePassword(content)} />
@@ -94,7 +104,8 @@ console.log("login is valid", isValid)
       <Pressable style={styles.authenticationButton} onPress={handleLogin}>
         <Text style={styles.buttonText}>Log in</Text>
       </Pressable>
-      <Text style={styles.text}>Don't have an account? <Text style={styles.link} onPress={() => props.navigation.navigate('SIGNUPOUTER')}>Sign up</Text></Text>
+
+      <Text style={styles.text}>Don't have an account? <Text style={styles.link} onPress={goToSignup}>Sign up</Text></Text>
 
     </View>
   );
@@ -185,7 +196,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
     fontWeight: 'bold'
-
   },
   authenticationButton: {
     backgroundColor: '#5050A5',
@@ -194,12 +204,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     padding: 20,
     borderRadius: 4,
-
     marginBottom: 30,
-
-
-
-
   },
   authenticationButtonInactive: {
     backgroundColor: '#5050A5',
@@ -209,9 +214,6 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 4,
     opacity: 0.5,
-
-
-
   }
 
 });

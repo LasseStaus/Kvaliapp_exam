@@ -6,12 +6,12 @@ import SignupOnboardStackNavigator from './SignupOnboardStackNavigator';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import ChatStackNavigator from './ChatStackNavigator';
 import EventStackNavigator from './EventStackNavigator';
-import HomeScreen from './../screens/HomeScreen';
-import DiscoverScreen from './../screens/DiscoverScreen';
-import MenuScreen from './../screens/MenuScreen';
+import HomeScreen from '../screens/HomeScreen';
+import DiscoverScreen from '../screens/DiscoverScreen';
+import MenuScreen from '../screens/MenuScreen';
 import { HeaderShownContext } from '@react-navigation/elements';
-import SignupScreen from './../screens/SignupScreen';
-import LoginScreen from './../screens/LoginScreen';
+import SignupScreen from '../screens/SignupScreen';
+import LoginScreen from '../screens/LoginScreen';
 import { useSelector } from 'react-redux';
 import { useFonts } from 'expo-font';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -24,16 +24,12 @@ const Navigation = props => {
   const loggedInUser = useSelector(state => state.user.loggedInUser);
   const isValid = useSelector(state => state.user.isValid);
 
-
-
   const [loaded] = useFonts({ TekoMedium: require('../assets/fonts/Teko-Medium.ttf'), TekoLight: require('../assets/fonts/Teko-Light.ttf') });
   if (!loaded) { return null; }
 
   return (
     <NavigationContainer>
       {isValid !== false && loggedInUser !== undefined ? (
-
-
         <Tab.Navigator
           screenOptions={({ route }) => ({
             tabBarIcon: ({ focused, color, size }) => {

@@ -1,6 +1,8 @@
 import React from 'react';
 import { useState } from 'react';
 import { View, Text, Button, StyleSheet, TextInput } from 'react-native';
+import { CHECK_ERROR } from '../store/actions/UserActions';
+
 
 
 interface Props {
@@ -12,22 +14,26 @@ interface Props {
     secure: boolean;
     onValid: (arg: boolean) => void;
     setContent: (arg: string) => void; 
+    removeError: (arg: any) => void;
 }
 
-const Input = ( {label='My default value', placeholder, secure, text, error, nameValid, onValid, setContent} : Props)  => {
+
+
+const Input = ( {label='My default value', placeholder, secure, text, error, nameValid, onValid, setContent, removeError} : Props)  => {
     const [touched, setTouched] = useState(false);
 
     const handleNewInput = (enteredText: string) => {
         setTouched(true);
         enteredText === '' ? onValid(false) : onValid(true);
         setContent(enteredText);
+        let errorMessage = '';
+        removeError('')
     };
 
    return (
       <View style={styles.container}>
           <Text style={styles.label}>{label}</Text>
           <TextInput value={text} 
-        
           style={styles.textInput}
             placeholder={placeholder}
             secureTextEntry={secure}

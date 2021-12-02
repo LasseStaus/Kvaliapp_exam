@@ -1,22 +1,14 @@
 import React, { useState } from 'react';
-import { View, Text, Button, StyleSheet, TextInput, TouchableOpacity, Image, Pressable } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, Pressable } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
-import { toggleUserValid } from '../store/actions/UserActions'
 import Input from './../components/Input';
-import { State } from 'react-native-gesture-handler';
 import { updateUser } from './../store/actions/UserActions'
 
 const OnboardUserinfoScreen = (props: any) => {
 
-  const isValid = useSelector((state: any) => state.user.isValid) // the subscription
-  const dispatch = useDispatch(); // helps to dispatch an action
 
-
-  // const changeProfileImage = () => {
-  //    props.src = '../assets/6d38ab105ed32e0c25e4f82e1e9ccd2a.png'; // not working
-  // }
-
+  const dispatch = useDispatch(); 
 
   const [fullName, setChangeEmail] = useState(''); // lift up
   const [fullNameValid, setNameValid] = useState(false);
@@ -25,44 +17,40 @@ const OnboardUserinfoScreen = (props: any) => {
   const [studyProgrammeValid, setPasswordValid] = useState(false);
   
   const userInfo = useSelector((state: any) => state.user?.loggedInUser );
-  console.log('User', userInfo)
-  /*      const userInfo = useSelector((state:any) => state.user.loggedInUser);
-       console.log('vi kigger efter den her',userInfo) */
-  const handleOnboardingUser = () => {
-    dispatch(updateUser(fullName, studyProgramme, userInfo, isValid, props));
-    //dispatch(toggleUserValid(!isValid))
-    // skifter fortegnet på boolean. action creater toggle happy.
+
+  const handleUpdateUser = () => {
+    dispatch(updateUser(fullName, studyProgramme, userInfo, props));
+  }
+
+
+  const something= ()=> {
+    console.log("hej")
+
   }
 
   return (
     <View style={styles.container}>
-
-      <Text>Is User done with onboarding? {String(isValid)}</Text>
-      {/* <Button title="Flip user done" onPress={handleOnboardingUser} /> */}
-      <View style={styles.imgWrap}>
-      </View>
+<Image
+        style={styles.tinyLogo}
+        source = {require('./../assets/imgs/logo.png')} />
       <View ><Text style={styles.headLine}>Before we start...</Text></View>
-
       <View style={styles.profileimgcontainer}>
         <Image source={require('../assets/imgs/default-user-img.png')} style={styles.imageSelect} />
         <TouchableOpacity>
           <Text style={styles.placeHolder}>Profile picture</Text>
           <View style={styles.smallbutton}>
             <Pressable>
-
               <Text style={styles.buttonText}>Upload</Text>
             </Pressable>
-
           </View>
         </TouchableOpacity>
       </View>
-
       <View style={styles.wrapper}>
-
         <Input label="WHAT IS YOUR NAME"
           placeholder="First name and last name"
           error="Enter your name"
           secure={false}
+          removeError={something}
           text={fullName} nameValid={fullNameValid}
           onValid={(valid: any) => setNameValid(valid)}
           setContent={(content: any) => setChangeEmail(content)} />
@@ -71,19 +59,16 @@ const OnboardUserinfoScreen = (props: any) => {
           placeholder="Select from list"
           error="Enter a study programme"
           secure={false}
+          removeError={something}
           text={studyProgramme} nameValid={studyProgrammeValid}
           onValid={(valid: any) => setPasswordValid(valid)}
           setContent={(content: any) => setChangePassword(content)} />
       </View>
-
-
-      <TouchableOpacity onPress={handleOnboardingUser}>
+      <TouchableOpacity onPress={handleUpdateUser}>
         <View style={styles.button}>
           <Text style={styles.buttonText}>Next</Text>
         </View>
       </TouchableOpacity>
-
-
     </View>
   );
 }
@@ -102,19 +87,15 @@ const styles = StyleSheet.create({
     width: 70,
     borderRadius: 50,
   },
-
-
   infoIcon: {
     flexDirection: 'row',
   },
-
-  imgWrap: {
-    width: 133,
-    marginTop: 40,
-    marginBottom: 20,
-
-  },
-
+  tinyLogo: {
+    height: 110,
+    marginBottom: 30,
+    marginTop:15,
+    alignSelf:'center'
+},
   wrapper: {
     backgroundColor: 'white',
     width: 300,
@@ -139,7 +120,6 @@ const styles = StyleSheet.create({
     width: 300,
     height: 70,
   },
-
   button: {
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
@@ -157,7 +137,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-
   },
   smallbutton: {
     alignItems: 'flex-start',
@@ -176,7 +155,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-
   },
 
   buttonText: {
@@ -187,18 +165,15 @@ const styles = StyleSheet.create({
     textTransform: 'capitalize',
     fontWeight: 'bold',
     fontSize: 16,
-
-
   },
   headLine: {
     textAlign: 'left',
     color: '#32305D',
     fontSize: 26,
     fontWeight: 'bold',
-    marginBottom: 40,
+    marginBottom: 20,
     fontFamily: "TekoMedium",
     width: 300
-
   },
 
   textInput: {

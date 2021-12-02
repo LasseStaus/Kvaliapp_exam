@@ -9,17 +9,12 @@ import { useSelector } from 'react-redux';
 import { toggleUserValid } from './../store/actions/UserActions'
 
 const OnboardingScreen4 = props => {
-
   // radio buttons 
-
   const isValid = useSelector((state) => state.user.isValid) 
-
        // dispatch
-       const dispatch = useDispatch();
-
+  const dispatch = useDispatch();
           // useState  
     const [someThing, someThingElse] = useState(''); // lift up
-
        const handleNotifications = () => {
            dispatch(notifications(someThing, someThingElse)); // not working
        }

@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import { View, Text,  StyleSheet,  Image, TouchableOpacity, Pressable } from 'react-native';
+import { View, Text,  StyleSheet,  Image, TouchableOpacity, Pressable, SafeAreaView } from 'react-native';
 import { CheckBox, Icon,  } from 'react-native-elements';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { signup } from '../store/actions/UserActions';
-
+import { CHECK_ERROR } from '../store/actions/UserActions';
 
 import Input from './../components/Input';
 import { State } from 'react-native-gesture-handler';
+
 
 const SignupScreen = (props: any) => {
     const [changeEmail, setChangeEmail] = useState(''); // lift up
@@ -22,38 +23,69 @@ const SignupScreen = (props: any) => {
 
     const [checked, setChecked] = useState(false)
     const dispatch = useDispatch();
+    const errorCode = useSelector((state: any) => state.user.errorCode)
 
+    
+    if (errorCode != '') {
+        
+    }
+    React.useEffect(() => {
+        console.log('error på siden', errorCode);
+   
+      
+     }, [errorCode]);
+    
     const handleSignup = () => {
+
+        if(changePassword != changeConfirmPassword) {
+            let errorMessage = "Passwords don't match";
+            return  dispatch({type: CHECK_ERROR, payload: errorMessage})
+        }
+
         dispatch(signup(changeEmail, changePassword, props));
     }
-    const goToTermsAndConditions = () => {
-        console.log("switch page")
-    }
+
+
+    const something= ()=> {
+        if (errorCode != '') {
+            let errorMessage = '';
+            return  dispatch({type: CHECK_ERROR, payload: errorMessage})
+        }
+        console.log("hej")
+    
+      }
     return (
     <View style={styles.container}>
    <Image
         style={styles.tinyLogo}
         source = {require('./../assets/imgs/logo.png')} />
     <Text style={styles.loginHeader}>Sign up to get access</Text>
+            {errorCode != '' &&
+            <View><Text style={styles.errorMsg}>{errorCode}</Text></View>
+            }
+    
     <View style={styles.loginWrapper}>  
         <Input label="E-mail"
             placeholder = "Enter your email"
-            error="Email not valid"
+            removeError={something}
+            error={"Please provide an email"}
             secure={false}
             text={changeEmail} nameValid={emailValid}
             onValid={ (valid: any) => setNameValid(valid)}
             setContent={ (content: any) => setChangeEmail(content)}/>
         <Input label="Password"
             placeholder = "Enter your password"
-            error="Password not valid"
+            error={"Please provide a password"}
             secure={true}
+            removeError={something}
             text={changePassword} nameValid={passwordValid}
             onValid={ (valid: any) => setPasswordValid(valid)}
             setContent={ (content: any) => setChangePassword(content)}/>
         <Input label="Repeat Password"
-            placeholder = "Confirm password"
+            placeholder = "Repeat password"
             secure={true}
-            error={"Password not valid"}
+            removeError={something}
+            error={"Please repeat password"}
             text={changeConfirmPassword} nameValid={passwordConfirmValid}
             onValid={ (valid: any) => setPasswordConfirmValid(valid)}
             setContent={ (content: any) => setChangeConfirmPassword(content)}/>
@@ -85,8 +117,14 @@ const styles = StyleSheet.create({
          marginRight: 20,
          color: '#32305D',
          fontFamily: 'TekoMedium',
-
     },  
+    errorMsg: {
+color: '#ed4337',
+fontWeight: 'bold',
+marginBottom: 10,
+
+flexWrap: 'wrap'
+    },
     enabled: {
         backgroundColor: 'black',
     },
@@ -106,20 +144,13 @@ const styles = StyleSheet.create({
   fontWeight: 'bold',
        justifyContent: 'center', //Centered vertically
       alignItems: 'center', // Centered horizontally
-     
        color: '#32305D'
-
- 
     },
     link: {
         textDecorationLine: 'underline',
-
          justifyContent: 'center', //Centered vertically
         alignItems: 'center', // Centered horizontally
-       
          color: '#32305D'
-  
-   
       },
     tinyLogo: {
         height: 110,
